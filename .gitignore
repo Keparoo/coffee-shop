@@ -3,7 +3,6 @@ venv/
 __pycache__/
 test.db
 authorization/
-auth.py
 
 # OS generated files #
 ######################

@@ -29,10 +29,7 @@ CORS(app)
         or appropriate status code indicating reason for failure
 '''
 @app.route('/drinks', methods=['GET'])
-def get_drink(jwt):
-  # jwt = get_token_auth_header()
-  # print(jwt)
-  
+def get_drink():
   return 'not implemented'
 
 '''
@@ -44,11 +41,8 @@ def get_drink(jwt):
         or appropriate status code indicating reason for failure
 '''
 @app.route('/drinks-detail', methods=['GET'])
-@requires_auth('get:images') # pass in permission needed
+@requires_auth('get:drinks-detail') # pass in permission needed
 def drinks_detail(jwt):
-  # jwt = get_token_auth_header()
-  # print(jwt)
-  
   return 'not implemented'
 
 '''
@@ -62,10 +56,7 @@ def drinks_detail(jwt):
 '''
 @app.route('/drinks', methods=['POST'])
 @requires_auth('post:drinks') # pass in permission needed
-def add_drink(jwt):
-  # jwt = get_token_auth_header()
-  # print(jwt)
-  
+def add_drink(id):
   return 'not implemented'
 
 '''
@@ -79,12 +70,9 @@ def add_drink(jwt):
     returns status code 200 and json {"success": True, "drinks": drink} where drink an array containing only the updated drink
         or appropriate status code indicating reason for failure
 '''
-@app.route('/drinks/<id>', methods=['PATCH'])
+@app.route('/drinks/<int:id>', methods=['PATCH'])
 @requires_auth('patch:drinks') # pass in permission needed
-def update_drink(jwt):
-  # jwt = get_token_auth_header()
-  # print(jwt)
-  
+def update_drink(jwt, id):
   return 'not implemented'
 
 '''
@@ -97,12 +85,9 @@ def update_drink(jwt):
     returns status code 200 and json {"success": True, "delete": id} where id is the id of the deleted record
         or appropriate status code indicating reason for failure
 '''
-@app.route('/drinks/<id>', methods=['DELETE'])
+@app.route('/drinks/<int:id>', methods=['DELETE'])
 @requires_auth('delete:drinks') # pass in permission needed
-def delete_drink(jwt):
-  # jwt = get_token_auth_header()
-  # print(jwt)
-  
+def delete_drink(jwt, id):
   return 'not implemented'
 
 # Error Handling

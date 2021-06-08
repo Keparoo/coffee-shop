@@ -79,8 +79,6 @@ def add_drink(id):
   if 'title' and 'recipe' not in body:
     abort(422)
 
-  
-
   title = body['title']
   recipe = json.dumps(body['recipe'])
 
@@ -106,7 +104,25 @@ def add_drink(id):
 @app.route('/drinks/<int:id>', methods=['PATCH'])
 @requires_auth('patch:drinks') # pass in permission needed
 def update_drink(jwt, id):
-  return 'not implemented'
+
+  drink = Drink.query.get(id)
+
+  if (drink == None):
+    abort(404)
+
+  body = request.get_json()
+  if 'title' in body:
+    drink.title = body['title']
+
+  if 'recipe' in body:
+    drink.recipe = json.dumps(body['recipe'])
+
+  drink.update()
+
+  return jsonify({
+  'success': True,
+  'drinks': [Drink.long(drink)]
+})
 
 '''
 @TODO implement endpoint
@@ -121,7 +137,18 @@ def update_drink(jwt, id):
 @app.route('/drinks/<int:id>', methods=['DELETE'])
 @requires_auth('delete:drinks') # pass in permission needed
 def delete_drink(jwt, id):
-  return 'not implemented'
+  
+  drink = Drink.query.get(id)
+
+  if (drink == None):
+    abort(404)
+
+  drink.delete()
+
+  return jsonify({
+  'success': True,
+  'delete': id
+})
 
 # Error Handling
 '''
@@ -136,6 +163,7 @@ def unprocessable(error):
         "error": 422,
         "message": "unprocessable"
     }), 422
+
 
 
 '''
@@ -153,9 +181,21 @@ def unprocessable(error):
 @TODO implement error handler for 404
     error handler should conform to general task above
 '''
-
+@app.errorhandler(404)
+def unprocessable(error):
+    return jsonify({
+        "success": False,
+        "error": 404,
+        "message": "resource not found"
+    }), 404
 
 '''
 @TODO implement error handler for AuthError
     error handler should conform to general task above
 '''
+@app.errorhandler(AuthError)
+def handle_AuthError(error):
+    response = jsonify(error.error)
+    response.status_code = error.status_code
+
+    return response

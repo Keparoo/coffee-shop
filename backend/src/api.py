@@ -51,7 +51,15 @@ def get_drinks():
 @app.route('/drinks-detail', methods=['GET'])
 @requires_auth('get:drinks-detail') # pass in permission needed
 def drinks_detail(jwt):
-  return 'not implemented'
+  drinks = Drink.query.all()
+  
+  if len(drinks) == 0:
+    abort(404)
+
+  return jsonify({
+    'success': True,
+    'drinks': [Drink.long(drink) for drink in drinks]
+  })
 
 '''
 @TODO implement endpoint

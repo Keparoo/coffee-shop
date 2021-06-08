@@ -17,7 +17,7 @@ CORS(app)
 !! NOTE THIS MUST BE UNCOMMENTED ON FIRST RUN
 !! Running this funciton will add one
 '''
-#db_drop_and_create_all()
+db_drop_and_create_all()
 
 # ROUTES
 '''
@@ -73,7 +73,24 @@ def drinks_detail(jwt):
 @app.route('/drinks', methods=['POST'])
 @requires_auth('post:drinks') # pass in permission needed
 def add_drink(id):
-  return 'not implemented'
+
+  body = request.get_json()
+
+  if 'title' and 'recipe' not in body:
+    abort(422)
+
+  
+
+  title = body['title']
+  recipe = json.dumps(body['recipe'])
+
+  drink = Drink(title=title, recipe=recipe)
+  drink.insert()
+
+  return jsonify({
+    'success': True,
+    'drinks': [Drink.long(drink)]
+  })
 
 '''
 @TODO implement endpoint

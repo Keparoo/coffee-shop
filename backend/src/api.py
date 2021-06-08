@@ -17,7 +17,7 @@ CORS(app)
 !! NOTE THIS MUST BE UNCOMMENTED ON FIRST RUN
 !! Running this funciton will add one
 '''
-# db_drop_and_create_all()
+#db_drop_and_create_all()
 
 # ROUTES
 '''
@@ -29,8 +29,16 @@ CORS(app)
         or appropriate status code indicating reason for failure
 '''
 @app.route('/drinks', methods=['GET'])
-def get_drink():
-  return 'not implemented'
+def get_drinks():
+  drinks = Drink.query.all()
+  
+  if len(drinks) == 0:
+    abort(404)
+
+  return jsonify({
+    'success': True,
+    'drinks': [Drink.short(drink) for drink in drinks]
+  })
 
 '''
 @TODO implement endpoint

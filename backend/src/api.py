@@ -9,7 +9,7 @@ from .auth.auth import AuthError, requires_auth
 
 app = Flask(__name__)
 setup_db(app)
-CORS(app)
+CORS(app, resources={r"*": {"origins": "*"}})
 
 # setup CORS Headers and allowed methods
 @app.after_request
@@ -27,6 +27,12 @@ def after_request(response):
 db_drop_and_create_all()
 
 # ROUTES
+@app.route('/')
+def index():
+    return jsonify({
+        'success': True,
+        'message':'hello-coffee'})
+
 '''
 @TODO implement endpoint
     GET /drinks

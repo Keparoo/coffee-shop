@@ -1,6 +1,7 @@
-## Full Stack Nano - IAM Final Project
+## Coffee Shop
 
-This application is a coffee shop recipe management system allowing managers, baristas and the public to create, edit, view and delete drink recipes depening on their assigned authorization roles. The application:
+This application is a coffee shop recipe management system allowing managers, baristas and the public to create, edit, view and delete drink recipes depening on their assigned authorization roles. This project was created to fulfill a requirement in the Udacity Full Stack Nano-Degree for the Identity and Access Management course.   
+The application:
 
 1. Displays graphics representing the ratios of ingredients in each drink.
 2. Allows public users to view drink names and graphics.

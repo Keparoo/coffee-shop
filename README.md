@@ -67,7 +67,7 @@ The `--reload` flag will detect file changes and restart the backend server auto
 
 ### Testing
 
-Tests are contained in the ``/backend/udacity-fsnd-udaspicelatte.postman_collection.json` file.
+Tests are contained in the `/backend/udacity-fsnd-udaspicelatte.postman_collection.json` file.
 
 To run the tests, install Postman https://www.postman.com/downloads, import the udacity-fsnd-uadspicelatte.postman_collection.json file into Postman and run the collection.  
 After the first run, comment out the db_drop_and_create_all() line in the api.py file or the database will be reset each time the app is run.

@@ -45,6 +45,8 @@ Ionic ships with a useful development server which detects changes and transpile
 ```bash
 ionic serve
 ```
+The frontend is served to http://localhost:8100/tabs/drink-menu   
+
 ### Authentication
 
 The authentication system used for this project is Auth0. `./src/app/services/auth.service.ts` contains the logic to direct a user to the Auth0 login page, managing the JWT token upon successful callback, and handle setting and retrieving the token from the local store. This token is then consumed by our DrinkService (`./src/app/services/drinks.service.ts`) and passed as an Authorization header when making requests to our backend.
@@ -65,6 +67,49 @@ To run the server, execute:
 
 The `--reload` flag will detect file changes and restart the backend server automatically.
 
+## API Reference
+
+### Getting Started
+* Base URL: This application is hosted locally. The backend is hosted at `http://127.0.0.1:5000/` 
+* Authentication: This application currently does not require authentication or API keys
+
+### Error Handling
+
+Errors are returned as a JSON object.
+
+    {
+        "success": False,
+        "error": 404,
+        "message": "resource not found"
+    }
+
+The API currently returns three classes of errors:
+
+* 400 – bad request 
+* 401 - unauthorized
+* 404 – resource not found  
+* 422 – unprocessable
+
+---
+### API Endpoints   
+
+#### GET /drinks
+returns:
+`{"success": True, "drinks": drinks}` where drinks is the list of drinks
+#### GET /drinks-detail
+returns:
+`{"success": True, "drinks": drinks}` where drinks is a detailed list of drinks
+#### POST /drinks
+returns:
+`{"success": True, "drinks": drink}` where drink an array containing only the newly created drink
+#### PATCH /drinks/<int: id>
+returns:
+`{"success": True, "drinks": drink}` where drink an array containing only the updated drink
+#### DELETE /drinks/<int: id>
+returns:
+`{"success": True, "drinks": drink}` where drink an array containing only the updated drink   
+
+---
 ### Testing
 
 Tests are contained in the `/backend/udacity-fsnd-udaspicelatte.postman_collection.json` file.

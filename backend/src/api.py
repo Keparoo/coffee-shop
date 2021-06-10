@@ -127,7 +127,7 @@ def update_drink(jwt, id):
 })
 
 @app.route('/drinks/<int:id>', methods=['DELETE'])
-@requires_auth('delete:drinks') # pass in permission needed
+@requires_auth('delete:drinks')
 def delete_drink(jwt, id):
   '''
   This endpoint handles DELETE requests to /drinks/<id>

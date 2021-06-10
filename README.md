@@ -107,7 +107,7 @@ returns:
 `{"success": True, "drinks": drink}` where drink an array containing only the updated drink
 #### DELETE /drinks/<int: id>
 returns:
-`{"success": True, "drinks": drink}` where drink an array containing only the updated drink   
+`{"success": True, "delete": id}` where id is the id of the deleted record   
 
 ---
 ### Testing

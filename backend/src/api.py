@@ -12,11 +12,11 @@ setup_db(app)
 CORS(app, resources={r"*": {"origins": "*"}})
 
 # setup CORS Headers and allowed methods
-@app.after_request
-def after_request(response):
-  response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,true')
-  response.headers.add('Access-Control-Allow-Methods', 'GET,POST,PATCH,DELETE,OPTIONS')
-  return response
+# @app.after_request
+# def after_request(response):
+#   response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,true')
+#   response.headers.add('Access-Control-Allow-Methods', 'GET,POST,PATCH,DELETE,OPTIONS')
+#   return response
 
 '''
 @TODO uncomment the following line to initialize the datbase
@@ -27,11 +27,11 @@ def after_request(response):
 db_drop_and_create_all()
 
 # ROUTES
-@app.route('/')
-def index():
-    return jsonify({
-        'success': True,
-        'message':'hello-coffee'})
+# @app.route('/')
+# def index():
+#     return jsonify({
+#         'success': True,
+#         'message':'hello-coffee'})
 
 '''
 @TODO implement endpoint
@@ -50,7 +50,7 @@ def get_drinks():
 
   return jsonify({
     'success': True,
-    'drinks': [Drink.short(drink) for drink in drinks]
+    'drinks': [drink.short() for drink in drinks]
   })
 
 '''
@@ -62,7 +62,7 @@ def get_drinks():
         or appropriate status code indicating reason for failure
 '''
 @app.route('/drinks-detail', methods=['GET'])
-@requires_auth('get:drinks-detail') # pass in permission needed
+@requires_auth('get:drinks-detail')
 def drinks_detail(jwt):
   drinks = Drink.query.all()
   
@@ -71,7 +71,7 @@ def drinks_detail(jwt):
 
   return jsonify({
     'success': True,
-    'drinks': [Drink.long(drink) for drink in drinks]
+    'drinks': [drink.long() for drink in drinks]
   })
 
 '''
@@ -84,8 +84,8 @@ def drinks_detail(jwt):
         or appropriate status code indicating reason for failure
 '''
 @app.route('/drinks', methods=['POST'])
-@requires_auth('post:drinks') # pass in permission needed
-def add_drink(id):
+@requires_auth('post:drinks')
+def add_drink(jwt):
 
   body = request.get_json()
 
@@ -100,7 +100,7 @@ def add_drink(id):
 
   return jsonify({
     'success': True,
-    'drinks': [Drink.long(drink)]
+    'drinks': [drink.long()]
   })
 
 '''
@@ -115,15 +115,15 @@ def add_drink(id):
         or appropriate status code indicating reason for failure
 '''
 @app.route('/drinks/<int:id>', methods=['PATCH'])
-@requires_auth('patch:drinks') # pass in permission needed
+@requires_auth('patch:drinks')
 def update_drink(jwt, id):
-
   drink = Drink.query.get(id)
 
   if (drink == None):
     abort(404)
-
+  
   body = request.get_json()
+
   if 'title' in body:
     drink.title = body['title']
 
@@ -134,7 +134,7 @@ def update_drink(jwt, id):
 
   return jsonify({
   'success': True,
-  'drinks': [Drink.long(drink)]
+  'drinks': [drink.long()]
 })
 
 '''

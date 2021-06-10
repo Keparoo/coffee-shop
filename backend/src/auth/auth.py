@@ -31,19 +31,28 @@ class AuthError(Exception):
     return the token part of the header
 '''
 def get_token_auth_header():
-  if 'Authorization' not in request.headers:
-    abort(401)
 
-  auth_header = request.headers['Authorization']
-  header_parts = auth_header.split(' ')
+  auth_header = request.headers.get('Authorization', None)
+  if not auth_header:
+      raise AuthError({
+          'code': 'authorization_header_missing',
+          'description': 'Authorization header is missing.'
+      }, 401)
+
+  header_parts = auth_header.split()
 
   if len(header_parts) != 2:
-    abort(401)
+    raise AuthError({
+    'code': 'invalid_header',
+    'description': 'Header invalid'
+    }, 401)
   elif header_parts[0].lower() != 'bearer':
-    abort(401)
+    raise AuthError({
+    'code': 'invalid_header',
+    'description': 'Authorization header must start with "Bearer".'
+    }, 401)
 
   return header_parts[1]
-  #raise Exception('Not Implemented')
 
 '''
 @TODO implement check_permissions(permission, payload) method
@@ -58,10 +67,10 @@ def get_token_auth_header():
 '''
 def check_permissions(permission, payload):
   if 'permissions' not in payload:
-                      raise AuthError({
-                          'code': 'invalid_claims',
-                          'description': 'Permissions not included in JWT.'
-                      }, 400)
+    raise AuthError({
+        'code': 'invalid_claims',
+        'description': 'Permissions not included in JWT.'
+    }, 400)
 
   if permission not in payload['permissions']:
       raise AuthError({
@@ -69,7 +78,6 @@ def check_permissions(permission, payload):
           'description': 'Permission not found.'
       }, 403)
   return True
-  #raise Exception('Not Implemented')
 
 '''
 @TODO implement verify_decode_jwt(token) method
@@ -143,21 +151,6 @@ def verify_decode_jwt(token):
         'code': 'invalid_header',
         'description': 'Unable to find the appropriate key.'
         }, 400)
-
-def get_token_auth_header():
-  if 'Authorization' not in request.headers:
-    abort(401)
-
-  auth_header = request.headers['Authorization']
-  header_parts = auth_header.split(' ')
-
-  if len(header_parts) != 2:
-    abort(401)
-  elif header_parts[0].lower() != 'bearer':
-    abort(401)
-
-  return header_parts[1]
-  #raise Exception('Not Implemented')
 
 '''
 @TODO implement @requires_auth(permission) decorator method

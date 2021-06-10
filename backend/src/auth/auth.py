@@ -4,10 +4,17 @@ from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
 
+#----------------------------------------------------------------------------#
+# Configure Auth0 information
+#----------------------------------------------------------------------------#
 
 AUTH0_DOMAIN = 'websecure.us.auth0.com'
 ALGORITHMS = ['RS256']
 API_AUDIENCE = 'coffee-shop'
+
+#----------------------------------------------------------------------------#
+# Implement JWT authorization
+#----------------------------------------------------------------------------#
 
 # A standardized way to communicate auth failure modes
 class AuthError(Exception):

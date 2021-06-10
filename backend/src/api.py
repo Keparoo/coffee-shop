@@ -15,13 +15,6 @@ app = Flask(__name__)
 setup_db(app)
 CORS(app, resources={r"*": {"origins": "*"}})
 
-# setup CORS Headers and allowed methods
-# @app.after_request
-# def after_request(response):
-#   response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,true')
-#   response.headers.add('Access-Control-Allow-Methods', 'GET,POST,PATCH,DELETE,OPTIONS')
-#   return response
-
 #----------------------------------------------------------------------------#
 # Uncomment for first run.
 # Comment out after DB is setup or the DB will be reset on each run.
@@ -32,12 +25,6 @@ db_drop_and_create_all()
 #----------------------------------------------------------------------------#
 # Routes
 #----------------------------------------------------------------------------#
-
-# @app.route('/')
-# def index():
-#     return jsonify({
-#         'success': True,
-#         'message':'hello-coffee'})
 
 @app.route('/drinks', methods=['GET'])
 def get_drinks():
@@ -182,13 +169,6 @@ def auth_error(error):
         "message": error.error['description']
     }), error.status_code
 
-# @app.errorhandler(AuthError)
-# def handle_AuthError(error):
-#     response = jsonify(error.error)
-#     response.status_code = error.status_code
-
-#     return response
-
 @app.errorhandler(400)
 def bad_request(error):
     return jsonify({
@@ -204,7 +184,6 @@ def method_not_allowed(error):
         "error": 405,
         "message": 'Method Not Allowed'
     }), 405
-
 
 @app.errorhandler(500)
 def internal_server_error(error):

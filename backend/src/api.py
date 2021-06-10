@@ -36,7 +36,10 @@ def get_drinks():
   drinks = Drink.query.all()
   
   if len(drinks) == 0:
-    abort(404)
+    return json.dumps({
+    'success': False,
+    'error': 'Drink database is empty'
+  }), 404
 
   return jsonify({
     'success': True,
@@ -77,8 +80,12 @@ def add_drink(jwt):
   title = body['title']
   recipe = json.dumps(body['recipe'])
 
-  drink = Drink(title=title, recipe=recipe)
-  drink.insert()
+  try:
+    drink = Drink(title=title, recipe=recipe)
+    drink.insert()
+  except BaseException:
+    abort(400)
+
 
   return jsonify({
     'success': True,
@@ -95,8 +102,11 @@ def update_drink(jwt, id):
   '''
   drink = Drink.query.get(id)
 
-  if (drink == None):
-    abort(404)
+  if drink is None:
+    return json.dumps({
+      'success': False,
+      'error': 'Drink #' + id + ' not found to be edited'
+    }), 404
   
   body = request.get_json()
 
@@ -106,7 +116,10 @@ def update_drink(jwt, id):
   if 'recipe' in body:
     drink.recipe = json.dumps(body['recipe'])
 
-  drink.update()
+  try:
+    drink.update()
+  except BaseException:
+    abort(400)
 
   return jsonify({
   'success': True,
@@ -123,10 +136,16 @@ def delete_drink(jwt, id):
   '''
   drink = Drink.query.get(id)
 
-  if (drink == None):
-    abort(404)
+  if drink is None:
+    return json.dumps({
+      'success': False,
+      'error': 'Drink #' + id + ' not found to be deleted'
+    }), 404
 
-  drink.delete()
+  try:
+    drink.delete()
+  except BaseException:
+    abort(400)
 
   return jsonify({
   'success': True,

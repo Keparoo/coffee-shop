@@ -9,6 +9,6 @@ export const environment = {
 		url: 'websecure.us', // the auth0 domain prefix
 		audience: 'coffee-shop', // the audience set for the auth0 app
 		clientId: 'RTTH6u6o1IfsiBxRIVKddR1BqTV4iJ85', // the client id generated for the auth0 app
-		callbackURL: 'http://localhost:8100' // the base url of the running ionic application.
+		callbackURL: 'http://127.0.0.1:8100' // the base url of the running ionic application.
 	}
 };
